@@ -13,9 +13,24 @@
         android:textStyle="bold"
         android:textSize="28sp"
         android:textColor="@android:color/white"
+        android:shadowColor="@color/blackopacity"
+        android:shadowRadius="6"
+        android:shadowDy="3"
+        android:shadowDx="0"
         android:layout_marginTop="100dp"
-        android:layout_marginRight="@dimen/margin_32"
-        android:layout_alignParentRight="true"
         android:text="@string/loading"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bring people closer"
+        android:layout_below="@+id/loadingText"
+        android:textSize="16sp"
+        android:shadowColor="@color/blackopacity"
+        android:shadowRadius="6"
+        android:shadowDy="3"
+        android:shadowDx="0"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
