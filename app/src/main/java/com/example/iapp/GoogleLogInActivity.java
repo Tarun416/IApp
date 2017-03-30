@@ -50,6 +50,7 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
         ButterKnife.bind(this);
         googleSignInButton.setSize(SignInButton.SIZE_WIDE);
         googleSignInButton.setOnClickListener(this);
+        googleSignInButton.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -61,10 +62,14 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    Intent i=new Intent(GoogleLogInActivity.this,HomeActivity.class);
+                    startActivity(i);
+                    finish();
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
+                    googleSignInButton.setVisibility(View.VISIBLE);
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
                 // ...
@@ -126,7 +131,7 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         CommonUtils.displayProgressDialog(this,"Authenticating Account");
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId() + " "+acct.getDisplayName()+" "+acct.getPhotoUrl());
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId() + " "+acct.getDisplayName()+" "+acct.getPhotoUrl()+ " "+acct.getEmail());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -142,6 +147,10 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GoogleLogInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+
                         }
 
                         CommonUtils.dismissProgressDialog();
