@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="blackopacity">#54000000</color>
+    <color name="profile_image">#13A2EA</color>
+    <color name="white">#ffffff</color>
+    <color name="pinktext">#C96181</color>
 </resources>

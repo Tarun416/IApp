@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Ceremony</string>
-    <string name="loading">Ceremonial</string>
+    <string name="app_name">Ceremonial</string>
+    <string name="bring_people_closer">Bring people closer</string>
+    <string name="profile_details">PROFILE DETAILS</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
 </resources>
