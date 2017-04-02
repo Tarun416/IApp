@@ -1,10 +1,12 @@
 package com.example.iapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.iapp.models.User;
+import com.example.iapp.utils.CommonUtils;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String username;
     private String email;
     private String photoUrl;
+    private Bundle bundle;
 
     @Override
     public void onBackPressed() {
@@ -59,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
+        bundle=getIntent().getExtras();
         saveTick.setOnClickListener(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -66,9 +71,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getDataFromFirebase() {
+        CommonUtils.displayProgressDialog(this,"fetching details");
         mDatabase.child("users").child(preferences.getString("accountId", "")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                CommonUtils.dismissProgressDialog();
                 User user = dataSnapshot.getValue(User.class);
                 username = user.displayName;
                 email = user.email;
@@ -78,6 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                CommonUtils.dismissProgressDialog();
                 Log.d(TAG, databaseError.getMessage() + " " + databaseError.getDetails());
 
             }
@@ -104,7 +112,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId())
         {
             case R.id.saveTick:
-                finish();
+                if(bundle!=null && bundle.getBoolean("fromSignIn"))
+                {
+                    Intent i=new Intent(this,HomeActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+                    finish();
+                }
                 break;
         }
 

@@ -76,8 +76,10 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
                 if (user != null) {
 
                     Intent i;
-                    if (firsttime)
+                    if (firsttime) {
                         i = new Intent(GoogleLogInActivity.this, ProfileActivity.class);
+                        i.putExtra("fromSignIn",true);
+                    }
                     else
                         i = new Intent(GoogleLogInActivity.this, HomeActivity.class);
 
