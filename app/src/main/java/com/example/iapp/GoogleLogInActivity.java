@@ -51,14 +51,14 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
     private SharedPreferences preferences;
-    private Boolean firsttime=false;
+    private Boolean firsttime = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_googlelogin);
         ButterKnife.bind(this);
-        preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         googleSignInButton.setSize(SignInButton.SIZE_WIDE);
         googleSignInButton.setOnClickListener(this);
         googleSignInButton.setVisibility(View.GONE);
@@ -75,14 +75,14 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
-                  Intent i;
-                    if(firsttime)
-                     i = new Intent(GoogleLogInActivity.this, ProfileActivity.class);
+                    Intent i;
+                    if (firsttime)
+                        i = new Intent(GoogleLogInActivity.this, ProfileActivity.class);
                     else
-                      i = new Intent(GoogleLogInActivity.this, HomeActivity.class);
+                        i = new Intent(GoogleLogInActivity.this, HomeActivity.class);
 
                     startActivity(i);
-                    overridePendingTransition(R.anim.enter,R.anim.exit);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                     finish();
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -150,7 +150,7 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         CommonUtils.displayProgressDialog(this, "Authenticating Account");
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId() + " " + acct.getDisplayName() + " " + acct.getPhotoUrl() + " " + acct.getEmail());
-        firsttime=true;
+        firsttime = true;
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -167,7 +167,7 @@ public class GoogleLogInActivity extends AppCompatActivity implements View.OnCli
                                     Toast.LENGTH_SHORT).show();
                         } else {
 
-                            preferences.edit().putString("accountId",acct.getId()).apply();
+                            preferences.edit().putString("accountId", acct.getId()).apply();
                             writeNewUser(acct.getId(), acct.getDisplayName(), acct.getPhotoUrl().toString(), acct.getEmail());
                         }
 

@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Currently, you haven\'t sent any gift"
+        android:textSize="26sp"
+        android:layout_margin="@dimen/margin_16"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

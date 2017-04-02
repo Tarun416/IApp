@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeActivity">
+
+   <ImageView
+       android:layout_width="wrap_content"
+       android:layout_height="300dp"
+       android:layout_centerInParent="true"
+       android:layout_margin="@dimen/margin_64"
+       android:src="@drawable/occassion_placeholder"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_32"
+        app:fabSize="normal"
+        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_add"
+        app:elevation="6dp"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

@@ -4,4 +4,13 @@
     <string name="profile_details">PROFILE DETAILS</string>
     <string name="username">Username</string>
     <string name="email">Email</string>
+    <string name="occassions">Events</string>
+    <string name="friends">Friends</string>
+    <string name="sent_gifts">Sent Gifts</string>
+    <string name="received_gifts">Received Gifts</string>
+    <string name="you_do_not_have_any_customers">You don\'t have any relatives or friends</string>
+    <string name="invite_customers">Invite Friends/Relatives</string>
+    <string name="currently_you_haven_t_received_any_gift">Currently, you haven\'t received any gift</string>
+    <string name="profile">Profile</string>
+    <string name="invite">Invite</string>
 </resources>
