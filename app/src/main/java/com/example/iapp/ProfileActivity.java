@@ -9,6 +9,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
  * Created by rahul on 31/03/17.
  */
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.photo)
     CircularImageView photo;
@@ -48,10 +49,17 @@ public class ProfileActivity extends AppCompatActivity {
     private String photoUrl;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
+        saveTick.setOnClickListener(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         getDataFromFirebase();
@@ -89,5 +97,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         username1.setText(username);
         email1.setText(email);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId())
+        {
+            case R.id.saveTick:
+                finish();
+                break;
+        }
+
     }
 }

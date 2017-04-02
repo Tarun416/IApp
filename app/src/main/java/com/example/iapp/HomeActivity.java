@@ -1,5 +1,6 @@
 package com.example.iapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -56,6 +57,18 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        switch(id)
+        {
+            case R.id.profile:
+                Intent i=new Intent(this,ProfileActivity.class);
+                startActivity(i);
+                break;
+
+            case R.id.invite:
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
