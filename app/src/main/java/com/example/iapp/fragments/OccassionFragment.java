@@ -3,8 +3,10 @@ package com.example.iapp.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iapp.R;
+import com.example.iapp.models.Occassion;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +56,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
     FloatingActionButton fab;
     private DatabaseReference mDatabase;
     private Calendar calendar;
+    private SharedPreferences preferences;
 
     public OccassionFragment() {
         // Required empty public constructor
@@ -69,6 +73,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_occassion, container, false);
         ButterKnife.bind(this, view);
+        preferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
         mDatabase = FirebaseDatabase.getInstance().getReference();
         fab.setOnClickListener(this);
         return view;
@@ -87,7 +92,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                 invokeDialog();
                 break;
             case R.id.radio_yes:
-                if(calendarTimeButton.getVisibility()!=View.VISIBLE) {
+                if (calendarTimeButton.getVisibility() != View.VISIBLE) {
                     calendarTimeButton.setVisibility(View.VISIBLE);
                     calendarTimeButton.setText("Select Time");
                 }
@@ -95,6 +100,39 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
             case R.id.radio_no:
                 calendarTimeButton.setVisibility(View.GONE);
                 descriptionContainer.setVisibility(View.VISIBLE);
+                break;
+            case R.id.cancelButton:
+                dialog.cancel();
+                break;
+            case R.id.saveButton:
+                String occassionName;
+                String time;
+                String description1;
+                Boolean isFriendInvited;
+                if(otherOccassion.getVisibility()==View.VISIBLE)
+                    occassionName=otherOccassion.getText().toString();
+                else
+                    occassionName=spinner.getSelectedItem().toString();
+
+
+                if(calendarTimeButton.getVisibility()==View.VISIBLE)
+                    time=calendarTimeButton.getText().toString();
+                else
+                    time="";
+
+                if(description.getText().toString().length()>0)
+                    description1=description.getText().toString();
+                else
+                    description1="";
+
+                if(radioYes.isChecked())
+                    isFriendInvited=true;
+                else
+                    isFriendInvited=false;
+
+                Occassion occassion=new Occassion(calendarButton.getText().toString(),isFriendInvited,time,description1);
+                mDatabase.child("users").child(preferences.getString("accountId","")).child("occassions").child(occassionName).setValue(occassion);
+                dialog.cancel();
                 break;
         }
     }
@@ -111,6 +149,10 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
     private RadioButton radioNo;
     private Button calendarTimeButton;
     private LinearLayout descriptionContainer;
+    private EditText description;
+    private Button cancelButton;
+    private Button saveButton;
+    private AlertDialog dialog;
 
     private void invokeDialog() {
         CommonUtils.displayProgressDialog(getActivity(), "Fetching Occassions");
@@ -119,11 +161,17 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
         spinner = (Spinner) alertLayout.findViewById(R.id.spinner);
         otherOccassion = (EditText) alertLayout.findViewById(R.id.other);
         calendarButton = (Button) alertLayout.findViewById(R.id.calendarButton);
-        inviteRel=(LinearLayout)alertLayout.findViewById(R.id.inviteRel) ;
-        radioYes=(RadioButton)alertLayout.findViewById(R.id.radio_yes);
-        calendarTimeButton=(Button)alertLayout.findViewById(R.id.calendarTimeButton);
-        radioNo=(RadioButton)alertLayout.findViewById(R.id.radio_no);
-        descriptionContainer=(LinearLayout)alertLayout.findViewById(R.id.descriptionContainer);
+        inviteRel = (LinearLayout) alertLayout.findViewById(R.id.inviteRel);
+        radioYes = (RadioButton) alertLayout.findViewById(R.id.radio_yes);
+        calendarTimeButton = (Button) alertLayout.findViewById(R.id.calendarTimeButton);
+        description = (EditText) alertLayout.findViewById(R.id.description);
+        radioNo = (RadioButton) alertLayout.findViewById(R.id.radio_no);
+        descriptionContainer = (LinearLayout) alertLayout.findViewById(R.id.descriptionContainer);
+        cancelButton = (Button) alertLayout.findViewById(R.id.cancelButton);
+        saveButton = (Button) alertLayout.findViewById(R.id.saveButton);
+        cancelButton.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+
         spinner.setOnItemSelectedListener(this);
         calendarTimeButton.setOnClickListener(this);
         radioYes.setOnClickListener(this);
@@ -162,7 +210,10 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
 
                                                            calendarButton.setText(dayOfMonth + " " + month + " " + year);
                                                            inviteRel.setVisibility(View.VISIBLE);
-
+                                                           if (radioYes.isChecked()) {
+                                                               calendarTimeButton.setVisibility(View.VISIBLE);
+                                                               calendarTimeButton.setText("Select Time");
+                                                           }
 
                                                        }
                                                    }, now.get(Calendar.YEAR), now.get(Calendar.MONTH),
@@ -177,23 +228,40 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
         calendarTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar now=Calendar.getInstance();
+                Calendar now = Calendar.getInstance();
 
-                tpd=TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                tpd = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-                          calendarTimeButton.setText(hourOfDay+ " : "+minute);
+                        calendarTimeButton.setText(hourOfDay + " : " + minute);
                         descriptionContainer.setVisibility(View.VISIBLE);
 
                     }
-                },12,10,0,true);
+                }, 12, 10, 0, true);
 
-                tpd.show(getActivity().getFragmentManager(),"TimePicker");
+                tpd.show(getActivity().getFragmentManager(), "TimePicker");
             }
         });
 
 
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() == 0) {
+                    description.setHint("Description (optional)");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 
         otherOccassion.addTextChangedListener(new TextWatcher() {
@@ -243,7 +311,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                 alert.setView(alertLayout);
                 // disallow cancel of AlertDialog on click of back button and outside touch
                 alert.setCancelable(true);
-                AlertDialog dialog = alert.create();
+                dialog = alert.create();
                 dialog.show();
             }
 
@@ -278,18 +346,14 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
         } else {
             calendarButton.setVisibility(View.VISIBLE);
 
-            if(!calendarButton.getText().toString().equalsIgnoreCase("select date"))
-            {
+            if (!calendarButton.getText().toString().equalsIgnoreCase("select date")) {
                 inviteRel.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 inviteRel.setVisibility(View.GONE);
             }
 
         }
     }
-
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
