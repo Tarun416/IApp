@@ -9,8 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true">
+        >
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -29,7 +28,6 @@
 
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/MyMaterialTheme"
             android:screenOrientation="portrait">
 
         </activity>

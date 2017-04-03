@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OccassionFragment(), getString(R.string.occassions));
+        adapter.addFragment(new OccassionFragment(), getString(R.string.events));
         adapter.addFragment(new FriendsFragment(), getString(R.string.friends));
         adapter.addFragment(new SentGiftsFragment(), getString(R.string.sent_gifts));
         adapter.addFragment(new ReceivedGiftsFragment(),getString(R.string.received_gifts));

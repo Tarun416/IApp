@@ -22,7 +22,8 @@
         app:fabSize="normal"
         app:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_add"
-        app:elevation="6dp"
+        android:elevation="0dp"
+        app:elevation="0dp"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
