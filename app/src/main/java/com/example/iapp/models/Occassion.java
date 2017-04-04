@@ -10,6 +10,7 @@ public class Occassion {
     public Boolean isFriendInvited;
     public String time;
     public String description;
+    public String occassionName;
 
 
     public Occassion()

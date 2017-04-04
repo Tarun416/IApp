@@ -1,34 +1,31 @@
 package com.example.iapp.fragments;
 
-
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.iapp.R;
+import com.example.iapp.adapter.EventsAdapter;
+import com.example.iapp.models.EventsName;
 import com.example.iapp.models.Occassion;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -54,9 +51,14 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
 
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    @Bind(R.id.imagePlaceholder)
+    ImageView imagePlaceholder;
+    @Bind(R.id.eventsRecView)
+    RecyclerView eventsRecView;
     private DatabaseReference mDatabase;
     private Calendar calendar;
     private SharedPreferences preferences;
+    private EventsAdapter mAdapter;
 
     public OccassionFragment() {
         // Required empty public constructor
@@ -73,10 +75,53 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_occassion, container, false);
         ButterKnife.bind(this, view);
-        preferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        getEventsFromFirebase();
         fab.setOnClickListener(this);
         return view;
+    }
+
+    private void getEventsFromFirebase() {
+        CommonUtils.displayProgressDialog(getActivity(),"Fetching events");
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        eventsRecView.setLayoutManager(linearLayoutManager);
+
+        mDatabase.child("users").child(preferences.getString("accountId","")).child("occassions").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CommonUtils.dismissProgressDialog();
+
+                if(dataSnapshot.getChildrenCount()>0) {
+                    imagePlaceholder.setVisibility(View.GONE);
+                    eventsRecView.setVisibility(View.VISIBLE);
+
+                    Log.d("count",dataSnapshot.getChildrenCount()+"");
+
+                    Occassion eventName=new Occassion();
+                    ArrayList<Occassion> occassion=new ArrayList<Occassion>();
+
+                    for(DataSnapshot d: dataSnapshot.getChildren())
+                    {
+                        eventName = d.getValue(Occassion.class);
+                        eventName.occassionName = d.getKey();
+                        occassion.add(eventName);
+                    }
+                    mAdapter = new EventsAdapter(getActivity(), occassion);
+                    eventsRecView.setAdapter(mAdapter);
+                }
+                else {
+                    imagePlaceholder.setVisibility(View.VISIBLE);
+                    eventsRecView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                CommonUtils.dismissProgressDialog();
+
+            }
+        });
     }
 
     @Override
@@ -109,29 +154,40 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                 String time;
                 String description1;
                 Boolean isFriendInvited;
-                if(otherOccassion.getVisibility()==View.VISIBLE)
-                    occassionName=otherOccassion.getText().toString();
+                if (otherOccassion.getVisibility() == View.VISIBLE)
+                    occassionName = otherOccassion.getText().toString();
                 else
-                    occassionName=spinner.getSelectedItem().toString();
+                    occassionName = spinner.getSelectedItem().toString();
 
 
-                if(calendarTimeButton.getVisibility()==View.VISIBLE)
-                    time=calendarTimeButton.getText().toString();
+                if (calendarTimeButton.getVisibility() == View.VISIBLE) {
+                    time = calendarTimeButton.getText().toString();
+                    String []hour=time.split(":");
+                    if(Integer.parseInt(hour[0].trim())<12 )
+                        time= calendarTimeButton.getText().toString()+ " "+"AM";
+                    else
+                        time= calendarTimeButton.getText().toString()+ " "+"PM";
+                }
                 else
-                    time="";
+                    time = null;
 
-                if(description.getText().toString().length()>0)
-                    description1=description.getText().toString();
+                if (description.getText().toString().length() > 0)
+                    description1 = description.getText().toString();
                 else
-                    description1="";
+                    description1 = null;
 
-                if(radioYes.isChecked())
-                    isFriendInvited=true;
+                if (radioYes.isChecked())
+                    isFriendInvited = true;
                 else
-                    isFriendInvited=false;
+                    isFriendInvited = false;
 
-                Occassion occassion=new Occassion(calendarButton.getText().toString(),isFriendInvited,time,description1);
-                mDatabase.child("users").child(preferences.getString("accountId","")).child("occassions").child(occassionName).setValue(occassion);
+                Occassion occassion = new Occassion(calendarButton.getText().toString(), isFriendInvited, time, description1);
+                mDatabase.child("users").child(preferences.getString("accountId", "")).child("occassions").child(occassionName).setValue(occassion, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        getEventsFromFirebase();
+                    }
+                });
                 dialog.cancel();
                 break;
         }
@@ -183,30 +239,30 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                 dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
                                                        @Override
                                                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                                                           if (monthOfYear == 1)
-                                                               month = "Jan";
+                                                           if (monthOfYear == 0)
+                                                               month = "January";
+                                                           else if (monthOfYear == 1)
+                                                               month = "February";
                                                            else if (monthOfYear == 2)
-                                                               month = "Feb";
+                                                               month = "March";
                                                            else if (monthOfYear == 3)
-                                                               month = "Mar";
+                                                               month = "April";
                                                            else if (monthOfYear == 4)
-                                                               month = "Apr";
-                                                           else if (monthOfYear == 5)
                                                                month = "May";
+                                                           else if (monthOfYear == 5)
+                                                               month = "June";
                                                            else if (monthOfYear == 6)
-                                                               month = "Jun";
+                                                               month = "July";
                                                            else if (monthOfYear == 7)
-                                                               month = "Jul";
+                                                               month = "August";
                                                            else if (monthOfYear == 8)
-                                                               month = "Aug";
+                                                               month = "September";
                                                            else if (monthOfYear == 9)
-                                                               month = "Sep";
+                                                               month = "October";
                                                            else if (monthOfYear == 10)
-                                                               month = "Oct";
+                                                               month = "November";
                                                            else if (monthOfYear == 11)
-                                                               month = "Nov";
-                                                           else if (monthOfYear == 12)
-                                                               month = "Dec";
+                                                               month = "December";
 
                                                            calendarButton.setText(dayOfMonth + " " + month + " " + year);
                                                            inviteRel.setVisibility(View.VISIBLE);

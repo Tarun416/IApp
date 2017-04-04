@@ -6,11 +6,22 @@
     tools:context=".HomeActivity">
 
    <ImageView
+       android:id="@+id/imagePlaceholder"
        android:layout_width="wrap_content"
        android:layout_height="300dp"
        android:layout_centerInParent="true"
        android:layout_margin="@dimen/margin_64"
+       android:visibility="gone"
+       tools:visibility="visible"
        android:src="@drawable/occassion_placeholder"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/eventsRecView"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
 
     <android.support.design.widget.FloatingActionButton
