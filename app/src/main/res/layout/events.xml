@@ -9,7 +9,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="8dp"
-    android:padding="8dp"
+    android:padding="16dp"
     android:id="@+id/cardContainer"
     app:cardCornerRadius="4dp">
 
@@ -17,7 +17,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="@dimen/margin_8"
+    android:padding="@dimen/margin_16"
     android:layout_height="match_parent">
 
     <TextView

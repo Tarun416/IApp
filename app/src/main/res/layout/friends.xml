@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:padding="8dp"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.github.siyamed.shapeimageview.CircularImageView
+            android:id="@+id/photo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_32"
+            app:siBorderColor="#ffffff"
+            app:siBorderWidth="5dp"
+            tools:src="@mipmap/splash_gift" />
+
+
+        <TextView
+            android:id="@+id/friendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_toRightOf="@+id/photo"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Mehboonb Ali" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/photo"
+            android:layout_below="@+id/friendName"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/margin_8"
+            android:layout_marginRight="@dimen/margin_8"
+            android:text="All Events"
+            android:textColor="@color/colorPrimary" />
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

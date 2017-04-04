@@ -93,6 +93,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                 CommonUtils.dismissProgressDialog();
 
                 if(dataSnapshot.getChildrenCount()>0) {
+                    if(imagePlaceholder!=null)
                     imagePlaceholder.setVisibility(View.GONE);
                     eventsRecView.setVisibility(View.VISIBLE);
 
@@ -289,7 +290,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                 tpd = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-                        calendarTimeButton.setText(hourOfDay + " : " + minute);
+                        calendarTimeButton.setText(hourOfDay + ":" + minute);
                         descriptionContainer.setVisibility(View.VISIBLE);
 
                     }
@@ -415,4 +416,6 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
 }
