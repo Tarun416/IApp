@@ -28,8 +28,6 @@ public class WishingActivity extends AppCompatActivity {
     TextView invitationTime;
     @Bind(R.id.sendMoney)
     Button sendMoney;
-
-
     @Bind(R.id.occassionName)
     TextView oname;
     @Bind(R.id.date)
@@ -43,8 +41,6 @@ public class WishingActivity extends AppCompatActivity {
     private String occassionName1;
     private String occassionDate1;
     private String occassionTime1;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -63,7 +63,7 @@
         android:textSize="@dimen/margin_16"
         android:textStyle="bold"
         android:layout_marginLeft="@dimen/margin_16"
-        android:text="Invitation Date : "/>
+        android:text="Occassion Date : "/>
 
 
     <TextView
