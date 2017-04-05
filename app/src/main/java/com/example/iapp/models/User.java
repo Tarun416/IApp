@@ -13,13 +13,15 @@ public class User {
     public String displayName;
     public String photoUrl;
     public String email;
+    public String accountId;
 
     public User() {
     }
 
-    public User(String displayName, String photoUrl, String email) {
+    public User(String id,String displayName, String photoUrl, String email) {
         this.displayName = displayName;
         this.email = email;
         this.photoUrl = photoUrl;
+        this.accountId=id;
     }
 }

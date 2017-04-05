@@ -1,5 +1,6 @@
 package com.example.iapp.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.iapp.FriendEventsActivity;
 import com.example.iapp.R;
 import com.example.iapp.adapter.FriendsAdapter;
+import com.example.iapp.interfaces.OnItemClick;
 import com.example.iapp.models.User;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -91,22 +94,39 @@ public class FriendsFragment extends Fragment {
                 }
 
 
+                if(friends.size()==0)
+                {
+                    emptyLayout.setVisibility(View.VISIBLE);
+                    friendsRecyclerView.setVisibility(View.GONE);
+                }
+
+
+
                 final ArrayList<User> userlist = new ArrayList<User>();
 
                 for (  i = 0; i < friends.size(); i++) {
                     mDatabase.child("users").child(friends.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.getValue(User.class);
-                            userlist.add(user);
 
+                            User user = dataSnapshot.getValue(User.class);
+
+                            userlist.add(user);
+                         //   user=null;
                             if(i==friends.size())
                             {
                                 if(userlist.size()>0) {
                                     friendsRecyclerView.setVisibility(View.VISIBLE);
                                     emptyLayout.setVisibility(View.GONE);
-
-                                    mAdapter = new FriendsAdapter(getActivity(), userlist);
+                                    mAdapter = new FriendsAdapter(getActivity(), userlist, new OnItemClick() {
+                                        @Override
+                                        public void onFriendClick(int position) {
+                                            Intent i=new Intent(getActivity(), FriendEventsActivity.class);
+                                            i.putExtra("accountId",userlist.get(position).accountId);
+                                            i.putExtra("name",userlist.get(position).displayName);
+                                            startActivity(i);
+                                        }
+                                    });
                                     friendsRecyclerView.setAdapter(mAdapter);
                                 }
                                 else
@@ -116,7 +136,6 @@ public class FriendsFragment extends Fragment {
                                 }
                             }
                         }
-
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             Log.d("error",databaseError.getMessage());
@@ -124,9 +143,6 @@ public class FriendsFragment extends Fragment {
                         }
                     });
                 }
-
-
-
             }
 
             @Override

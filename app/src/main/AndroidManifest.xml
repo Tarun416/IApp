@@ -29,13 +29,17 @@
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait">
-
         </activity>
 
         <activity
             android:name=".ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginNoActionBar"></activity>
+
+
+        <activity
+            android:name=".FriendEventsActivity"
+            android:screenOrientation="portrait"></activity>
 
 
     </application>
