@@ -1,24 +1,16 @@
 package com.example.iapp.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.iapp.R;
 import com.example.iapp.interfaces.OnItemClick;
 import com.example.iapp.models.Occassion;
-import com.example.iapp.models.User;
-import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
 
@@ -33,10 +25,12 @@ public class FriendsEventAdapter extends RecyclerView.Adapter<FriendsEventAdapte
 
     private Context context;
     private ArrayList<Occassion> occassions;
+    private OnItemClick onItemClick;
 
-    public FriendsEventAdapter(Context context, ArrayList<Occassion> occassions) {
+    public FriendsEventAdapter(Context context, ArrayList<Occassion> occassions, OnItemClick onItemClick) {
         this.context = context;
         this.occassions=occassions;
+        this.onItemClick=onItemClick;
     }
 
     @Override
@@ -63,7 +57,7 @@ public class FriendsEventAdapter extends RecyclerView.Adapter<FriendsEventAdapte
         return occassions.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.occassionName)
         TextView occassionName;
@@ -77,6 +71,23 @@ public class FriendsEventAdapter extends RecyclerView.Adapter<FriendsEventAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            cardContainer.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position=getAdapterPosition();
+
+            if(position!=RecyclerView.NO_POSITION)
+            {
+                switch(view.getId())
+                {
+                    case R.id.cardContainer:
+                        onItemClick.onFriendEventClick(position);
+                        break;
+                }
+            }
+
         }
     }
 

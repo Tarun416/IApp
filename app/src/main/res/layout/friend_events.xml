@@ -46,7 +46,7 @@
             android:textSize="14sp"
             android:maxLines="1"
             android:layout_marginTop="@dimen/margin_8"
-            tools:text="All Relatives/friends are invited at 14:30"/>
+            tools:text="You are invited at 14:30"/>
 
     </RelativeLayout>
 

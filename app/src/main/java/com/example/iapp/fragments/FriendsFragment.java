@@ -126,6 +126,11 @@ public class FriendsFragment extends Fragment {
                                             i.putExtra("name",userlist.get(position).displayName);
                                             startActivity(i);
                                         }
+
+                                        @Override
+                                        public void onFriendEventClick(int position) {
+
+                                        }
                                     });
                                     friendsRecyclerView.setAdapter(mAdapter);
                                 }

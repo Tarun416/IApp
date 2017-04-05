@@ -6,4 +6,5 @@ package com.example.iapp.interfaces;
 
 public interface OnItemClick {
     void onFriendClick(int position);
+    void onFriendEventClick(int position);
 }

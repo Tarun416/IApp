@@ -1,5 +1,6 @@
 package com.example.iapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.iapp.adapter.EventsAdapter;
 import com.example.iapp.adapter.FriendsEventAdapter;
+import com.example.iapp.interfaces.OnItemClick;
 import com.example.iapp.models.Occassion;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +48,7 @@ public class FriendEventsActivity extends AppCompatActivity {
     private String name;
     private String accountId;
     private DatabaseReference mDatabase;
-
+    private ArrayList<Occassion> occassion;
     private FriendsEventAdapter mAdapter;
 
     @Override
@@ -91,14 +93,31 @@ public class FriendEventsActivity extends AppCompatActivity {
                     Log.d("count", dataSnapshot.getChildrenCount() + "");
 
                     Occassion eventName = new Occassion();
-                    ArrayList<Occassion> occassion = new ArrayList<Occassion>();
+
+                    occassion = new ArrayList<Occassion>();
 
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         eventName = d.getValue(Occassion.class);
                         eventName.occassionName = d.getKey();
                         occassion.add(eventName);
                     }
-                    mAdapter = new FriendsEventAdapter(FriendEventsActivity.this, occassion);
+                    mAdapter = new FriendsEventAdapter(FriendEventsActivity.this, occassion, new OnItemClick() {
+                        @Override
+                        public void onFriendClick(int position) {
+
+                        }
+
+                        @Override
+                        public void onFriendEventClick(int position) {
+                             Intent i=new Intent(FriendEventsActivity.this,WishingActivity.class);
+                             i.putExtra("name",name);
+                             i.putExtra("occassionname",occassion.get(position).occassionName);
+                             i.putExtra("occassiondate",occassion.get(position).date);
+                             i.putExtra("occassiontime",occassion.get(position).time);
+                            i.putExtra("isFriendInvited",occassion.get(position).isFriendInvited);
+                             startActivity(i);
+                        }
+                    });
                     eventsRecyclerView.setAdapter(mAdapter);
                 } else {
                     noocemptylayout.setVisibility(View.VISIBLE);
@@ -112,7 +131,6 @@ public class FriendEventsActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override
