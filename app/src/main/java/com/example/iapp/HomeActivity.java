@@ -62,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.profile:
                 Intent i=new Intent(this,ProfileActivity.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
                 break;
 
             case R.id.invite:

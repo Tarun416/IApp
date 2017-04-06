@@ -116,6 +116,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 {
                     Intent i=new Intent(this,HomeActivity.class);
                     startActivity(i);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                     finish();
                 }
                 else {

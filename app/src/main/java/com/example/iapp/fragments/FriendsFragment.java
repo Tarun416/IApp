@@ -94,17 +94,14 @@ public class FriendsFragment extends Fragment {
                 }
 
 
-                if(friends.size()==0)
-                {
+                if (friends.size() == 0) {
                     emptyLayout.setVisibility(View.VISIBLE);
                     friendsRecyclerView.setVisibility(View.GONE);
                 }
 
-
-
                 final ArrayList<User> userlist = new ArrayList<User>();
 
-                for (  i = 0; i < friends.size(); i++) {
+                for (i = 0; i < friends.size(); i++) {
                     mDatabase.child("users").child(friends.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,19 +109,19 @@ public class FriendsFragment extends Fragment {
                             User user = dataSnapshot.getValue(User.class);
 
                             userlist.add(user);
-                         //   user=null;
-                            if(i==friends.size())
-                            {
-                                if(userlist.size()>0) {
+                            //   user=null;
+                            if (i == friends.size()) {
+                                if (userlist.size() > 0) {
                                     friendsRecyclerView.setVisibility(View.VISIBLE);
                                     emptyLayout.setVisibility(View.GONE);
                                     mAdapter = new FriendsAdapter(getActivity(), userlist, new OnItemClick() {
                                         @Override
                                         public void onFriendClick(int position) {
-                                            Intent i=new Intent(getActivity(), FriendEventsActivity.class);
-                                            i.putExtra("accountId",userlist.get(position).accountId);
-                                            i.putExtra("name",userlist.get(position).displayName);
+                                            Intent i = new Intent(getActivity(), FriendEventsActivity.class);
+                                            i.putExtra("accountId", userlist.get(position).accountId);
+                                            i.putExtra("name", userlist.get(position).displayName);
                                             startActivity(i);
+                                            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
                                         }
 
                                         @Override
@@ -133,17 +130,16 @@ public class FriendsFragment extends Fragment {
                                         }
                                     });
                                     friendsRecyclerView.setAdapter(mAdapter);
-                                }
-                                else
-                                {
+                                } else {
                                     friendsRecyclerView.setVisibility(View.GONE);
                                     emptyLayout.setVisibility(View.VISIBLE);
                                 }
                             }
                         }
+
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Log.d("error",databaseError.getMessage());
+                            Log.d("error", databaseError.getMessage());
 
                         }
                     });

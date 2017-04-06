@@ -26,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 Intent intent= new Intent(SplashActivity.this,GoogleLogInActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
                 finish();
             }
         },SPLASH_TIMEOUT);

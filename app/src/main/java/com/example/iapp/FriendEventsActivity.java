@@ -116,6 +116,7 @@ public class FriendEventsActivity extends AppCompatActivity {
                              i.putExtra("occassiontime",occassion.get(position).time);
                             i.putExtra("isFriendInvited",occassion.get(position).isFriendInvited);
                              startActivity(i);
+                            overridePendingTransition(R.anim.enter, R.anim.exit);
                         }
                     });
                     eventsRecyclerView.setAdapter(mAdapter);

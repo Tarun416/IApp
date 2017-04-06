@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/bankLoginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="Bank Login"/>
+
+    <EditText
+        android:id="@+id/clientId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_below="@+id/bankLoginText"
+        android:padding="8dp"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:background="@drawable/invite_background"
+        android:hint="Client Id"/>
+
+
+    <EditText
+        android:id="@+id/accessCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_below="@+id/clientId"
+        android:padding="8dp"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:background="@drawable/invite_background"
+        android:hint="Access Code"/>
+
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/accessCode"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="LOGIN"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:background="@drawable/send_money"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
