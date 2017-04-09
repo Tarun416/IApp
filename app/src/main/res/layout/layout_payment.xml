@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/sendMoneyContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/backArrowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/sendMoneyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_toRightOf="@+id/backArrowButton"
+            android:text="Send Money"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/toText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sendMoneyContainer"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_32"
+        android:text="TO"
+        android:textColor="@color/grey_700"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/receiverAccountNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toText"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="4444777755550926"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/receiverName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/receiverAccountNo"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="SAJEED ABRAHAM"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/fromText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/receiverName"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_32"
+        android:text="FROM"
+        android:textColor="@color/grey_700"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/senderAccountNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fromText"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="4444777755550925"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/senderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/senderAccountNo"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="SIMRAN KAPPOR"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/available_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/available_balace"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_below="@+id/senderName"/>
+
+
+    <TextView
+        android:id="@+id/amttext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AMOUNT"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_below="@+id/available_balance"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/margin_32"/>
+
+
+    <TextView
+        android:id="@+id/rupeesymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/amttext"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/rupee_sym"/>
+    
+    
+    <EditText
+        android:id="@+id/rupee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_below="@+id/amttext"
+        android:textSize="18sp"
+        android:hint="00.00"
+        android:inputType="number"
+        android:layout_toRightOf="@+id/rupeesymbol"
+        />
+    
+    <Button
+        android:id="@+id/sendMoneyButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/send_money"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_16"
+        android:text="SEND MONEY"/>
+
+</RelativeLayout>

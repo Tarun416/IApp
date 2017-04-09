@@ -1,5 +1,7 @@
 package com.example.iapp.apiInterface;
 
+import com.squareup.okhttp.ResponseBody;
+
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;

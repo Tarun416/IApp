@@ -1,6 +1,9 @@
 package com.example.iapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 /**
  * Created by rahul on 05/04/17.
@@ -54,6 +58,8 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
     private View alertLayout;
     private AlertDialog dialog;
     private Authorization authorizationApi;
+    private String token;
+    private SharedPreferences preferences;
 
 
     @Override
@@ -67,6 +73,7 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setTitle("Wish your friend");
         sendMoney.setOnClickListener(this);
 
+        preferences= PreferenceManager.getDefaultSharedPreferences(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,26 +111,31 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.loginButton:
-                CommonUtils.displayProgressDialog(WishingActivity.this,"Authorizing");
-                authorizationApi=ApiGenerator.createServiceAuthorization(Authorization.class);
-                authorizationApi.authorizeClient(clientId.getText().toString().trim(),accessCode.getText().toString(),new Callback<Response>() {
+                CommonUtils.displayProgressDialog(WishingActivity.this, "Authorizing");
+                authorizationApi = ApiGenerator.createServiceAuthorization(Authorization.class);
+                authorizationApi.authorizeClient(clientId.getText().toString().trim(), accessCode.getText().toString(), new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
                         CommonUtils.dismissProgressDialog();
-                        Log.d("success",response.toString());
+                        String bodyString = new String(((TypedByteArray) response.getBody()).getBytes());
+                        token = bodyString.split(":")[1].substring(1, bodyString.split(":")[1].length() - 3).trim();
+                        Log.d("success", token);
+                        preferences.edit().putString("token",token).apply();
+                        Intent i=new Intent(WishingActivity.this,PaymentActivity.class);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.enter,R.anim.exit);
                         dialog.dismiss();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.d("failure",error.getMessage());
+                        Log.d("failure", error.getMessage());
                         CommonUtils.dismissProgressDialog();
                         dialog.dismiss();
 
                     }
                 });
                 break;
-
         }
     }
 
@@ -137,6 +149,8 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
         loginButton=(Button)alertLayout.findViewById(R.id.loginButton);
         accessCode=(EditText)alertLayout.findViewById(R.id.accessCode);
         clientId=(EditText)alertLayout.findViewById(R.id.clientId);
+        clientId.setText(BuildConfig.CLIENT_ID);
+        accessCode.setText(BuildConfig.ACCESS_CODE);
         loginButton.setOnClickListener(this);
         AlertDialog.Builder alert=new AlertDialog.Builder(alertLayout.getContext());
         alert.setView(alertLayout);

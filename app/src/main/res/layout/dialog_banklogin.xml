@@ -33,6 +33,7 @@
         android:layout_marginTop="@dimen/margin_16"
         android:layout_below="@+id/clientId"
         android:padding="8dp"
+        android:inputType="textPassword"
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginRight="@dimen/margin_16"
         android:background="@drawable/invite_background"
