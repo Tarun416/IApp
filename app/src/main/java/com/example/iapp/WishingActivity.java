@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.iapp.apiInterface.Authorization;
 import com.example.iapp.generator.ApiGenerator;
@@ -90,7 +92,6 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             invitationTime.setVisibility(View.GONE);
             time.setVisibility(View.GONE);
-
         }
 
         friendName.setText(name);
@@ -100,14 +101,17 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        finish();
-    }
+        preferences.edit().putString("token",null).apply();
+        finish();}
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sendMoney:
+                if(preferences.getString("token","")==null || preferences.getString("token","")=="")
                 invokeDialog();
+                else
+                 invokeSelectAccount();
                 break;
 
             case R.id.loginButton:
@@ -121,10 +125,9 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
                         token = bodyString.split(":")[1].substring(1, bodyString.split(":")[1].length() - 3).trim();
                         Log.d("success", token);
                         preferences.edit().putString("token",token).apply();
-                        Intent i=new Intent(WishingActivity.this,PaymentActivity.class);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.enter,R.anim.exit);
+                        preferences.edit().putString("clientId",clientId.getText().toString()).apply();
                         dialog.dismiss();
+                        invokeSelectAccount();
                     }
 
                     @Override
@@ -136,10 +139,54 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
                 break;
+
+
+            case R.id.cancelButton:
+                dialog.dismiss();
+                break;
+
+            case R.id.saveButton:
+                if((firstRadioButton.isChecked()|| secondRadioButton.isChecked()))
+                {
+                    Intent i=new Intent(WishingActivity.this,PaymentActivity.class);
+                    i.putExtra("accountNo",firstRadioButton.isChecked()?firstRadioButton.getText().toString():secondRadioButton.getText().toString());
+                    startActivity(i);
+                   // finish();
+                    overridePendingTransition(R.anim.enter,R.anim.exit);
+                    dialog.dismiss();
+                }
+                else
+                {
+                    Toast.makeText(this,"Please select one account",Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
 
-   private Button loginButton;
+    private Button cancelButton;
+    private Button saveButton;
+    private RadioButton firstRadioButton;
+    private RadioButton secondRadioButton;
+
+
+    private void invokeSelectAccount() {
+        alertLayout=getLayoutInflater().inflate(R.layout.layout_select_account,null);
+        cancelButton= (Button) alertLayout.findViewById(R.id.cancelButton);
+        saveButton=(Button)alertLayout.findViewById(R.id.saveButton);
+        firstRadioButton=(RadioButton) alertLayout.findViewById(R.id.firstRadioButton);
+        secondRadioButton=(RadioButton)alertLayout.findViewById(R.id.secondRadioButton);
+        cancelButton.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        firstRadioButton.setOnClickListener(this);
+        secondRadioButton.setOnClickListener(this);
+        AlertDialog.Builder alert=new AlertDialog.Builder(WishingActivity.this);
+        alert.setView(alertLayout);
+        alert.setCancelable(true);
+        dialog=alert.create();
+        dialog.show();
+    }
+
+    private Button loginButton;
     private EditText accessCode;
     private EditText clientId;
 

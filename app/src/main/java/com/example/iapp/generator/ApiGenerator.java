@@ -47,8 +47,8 @@ public class ApiGenerator {
         RequestInterceptor requestInterceptor=new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addQueryParam("client_id",client_id);
-                request.addQueryParam("password",access_code);
+                request.addHeader("Accept", "application/json");
+
             }
         };
 
