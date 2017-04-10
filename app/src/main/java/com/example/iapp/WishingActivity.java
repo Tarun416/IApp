@@ -150,6 +150,9 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
                 {
                     Intent i=new Intent(WishingActivity.this,PaymentActivity.class);
                     i.putExtra("accountNo",firstRadioButton.isChecked()?firstRadioButton.getText().toString():secondRadioButton.getText().toString());
+                    i.putExtra("receiverName",name);
+                    i.putExtra("occassionName",occassionName1);
+                    i.putExtra("occassionDate",occassionDate1);
                     startActivity(i);
                    // finish();
                     overridePendingTransition(R.anim.enter,R.anim.exit);

@@ -20,7 +20,10 @@ import android.widget.Toast;
 import com.example.iapp.apiInterface.Retail;
 import com.example.iapp.generator.ApiGenerator;
 import com.example.iapp.models.FundTransfer;
+import com.example.iapp.models.SendGift;
 import com.example.iapp.utils.CommonUtils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +53,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     @Bind(R.id.receiverAccountNo)
     TextView receiverAccountNo;
     @Bind(R.id.receiverName)
-    TextView receiverName;
+    TextView receiverName2;
     @Bind(R.id.fromText)
     TextView fromText;
     @Bind(R.id.senderAccountNo)
@@ -76,6 +79,13 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private String token;
     private SharedPreferences preferences;
     private DecimalFormat df;
+    private DatabaseReference mDatabaseReference;
+    private String receiverName;
+    private String occassionDate;
+    private String sentMoney;
+    private String occassionName;
+    private String transaction_amount;
+
 
     @Override
     public void onBackPressed() {
@@ -94,8 +104,12 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         backArrowButton.setOnClickListener(this);
         sendMoneyButton.setOnClickListener(this);
         bundle = getIntent().getExtras();
+        receiverName=bundle.getString("receiverName");
+        occassionDate=bundle.getString("occassionDate");
+        occassionName=bundle.getString("occassionName");
         senderAccountNo.setText(bundle.getString("accountNo"));
         retail = ApiGenerator.createServiceRetailBanking(Retail.class);
+        mDatabaseReference= FirebaseDatabase.getInstance().getReference();
 
         getBalance();
 
@@ -134,7 +148,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
 
             case R.id.sendMoneyButton:
-                if (rupee != null && Integer.parseInt(rupee.getText().toString()) > 1) {
+                if (rupee != null && rupee.getText().toString()!=""&&Integer.parseInt(rupee.getText().toString()) > 1) {
                     CommonUtils.displayProgressDialog(PaymentActivity.this, "Sending money");
 
                     retail.fundTransfer(client_id, token, senderAccountNo.getText().toString(),receiverAccountNo.getText().toString(),  rupee.getText().toString(), "NA", "1", "Direct-To-Home payments", new Callback<Response>() {
@@ -149,14 +163,14 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
                             try {
                                 JSONArray jsonArray = new JSONArray(bodyString);
-
                                 Log.d("fundTransfer", jsonArray.getJSONObject(1).getString("referance_no"));
-
+                                transaction_amount=jsonArray.getJSONObject(1).getString("transaction_amount");
                                 Log.d("fundTransfer", jsonArray.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
+                            sendDataToFirebase();
 
                             getBalance();
 
@@ -175,5 +189,13 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
         }
+    }
+
+    private void sendDataToFirebase() {
+
+        SendGift sendGift=new SendGift(receiverName,occassionDate,transaction_amount,occassionName);
+
+        mDatabaseReference.child("users").child(preferences.getString("accountId","")).child("sentGifts").push().setValue(sendGift);
+
     }
 }
