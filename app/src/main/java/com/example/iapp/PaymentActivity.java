@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.iapp.apiInterface.Retail;
 import com.example.iapp.generator.ApiGenerator;
 import com.example.iapp.models.FundTransfer;
+import com.example.iapp.models.ReceivedGift;
 import com.example.iapp.models.SendGift;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DatabaseReference;
@@ -85,6 +86,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private String sentMoney;
     private String occassionName;
     private String transaction_amount;
+    private String friendAccountId;
 
 
     @Override
@@ -104,6 +106,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         backArrowButton.setOnClickListener(this);
         sendMoneyButton.setOnClickListener(this);
         bundle = getIntent().getExtras();
+        friendAccountId=bundle.getString("friendAccountId");
         receiverName=bundle.getString("receiverName");
         occassionDate=bundle.getString("occassionDate");
         occassionName=bundle.getString("occassionName");
@@ -194,8 +197,12 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private void sendDataToFirebase() {
 
         SendGift sendGift=new SendGift(receiverName,occassionDate,transaction_amount,occassionName);
-
         mDatabaseReference.child("users").child(preferences.getString("accountId","")).child("sentGifts").push().setValue(sendGift);
+
+
+        ReceivedGift receivedGift=new ReceivedGift("Tarun",occassionDate,transaction_amount,occassionName);
+
+        mDatabaseReference.child("users").child(friendAccountId).child("receivedGifts").push().setValue(receivedGift);
 
     }
 }

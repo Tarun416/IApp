@@ -62,6 +62,7 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
     private Authorization authorizationApi;
     private String token;
     private SharedPreferences preferences;
+    private String friendAccountId;
 
 
     @Override
@@ -84,6 +85,7 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
         });
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
+        friendAccountId=bundle.getString("friendAccountId");
         occassionName1 = bundle.getString("occassionname");
         occassionDate1 = bundle.getString("occassiondate");
         if (bundle.getBoolean("isFriendInvited")) {
@@ -153,6 +155,7 @@ public class WishingActivity extends AppCompatActivity implements View.OnClickLi
                     i.putExtra("receiverName",name);
                     i.putExtra("occassionName",occassionName1);
                     i.putExtra("occassionDate",occassionDate1);
+                    i.putExtra("friendAccountId",friendAccountId);
                     startActivity(i);
                    // finish();
                     overridePendingTransition(R.anim.enter,R.anim.exit);

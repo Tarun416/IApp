@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.iapp.adapter.EventsAdapter;
 import com.example.iapp.adapter.FriendsEventAdapter;
 import com.example.iapp.interfaces.OnItemClick;
 import com.example.iapp.models.Occassion;
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.example.iapp.R.id.imagePlaceholder;
 
 /**
  * Created by rahul on 05/04/17.
@@ -46,7 +43,7 @@ public class FriendEventsActivity extends AppCompatActivity {
     TextView noocemptylayout;
 
     private String name;
-    private String accountId;
+    private String friendAccountId;
     private DatabaseReference mDatabase;
     private ArrayList<Occassion> occassion;
     private FriendsEventAdapter mAdapter;
@@ -63,7 +60,7 @@ public class FriendEventsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Friends's Events");
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
-        accountId = bundle.getString("accountId");
+        friendAccountId = bundle.getString("accountId");
         friendsName.setText(name);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -81,7 +78,7 @@ public class FriendEventsActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         eventsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mDatabase.child("users").child(accountId).child("occassions").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child(friendAccountId).child("occassions").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CommonUtils.dismissProgressDialog();
@@ -114,6 +111,7 @@ public class FriendEventsActivity extends AppCompatActivity {
                              i.putExtra("occassionname",occassion.get(position).occassionName);
                              i.putExtra("occassiondate",occassion.get(position).date);
                              i.putExtra("occassiontime",occassion.get(position).time);
+                            i.putExtra("friendAccountId",friendAccountId);
                             i.putExtra("isFriendInvited",occassion.get(position).isFriendInvited);
                              startActivity(i);
                             overridePendingTransition(R.anim.enter, R.anim.exit);
