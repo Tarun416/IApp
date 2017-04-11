@@ -41,6 +41,10 @@ public class ReceiveGiftAdapter extends RecyclerView.Adapter<ReceiveGiftAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ReceivedGift receivedGift = receivedGifts.get(position);
+        holder.occassionDate.setText(receivedGift.occassionDate);
+        holder.occassionName.setText(receivedGift.occassionName);
+        holder.senderName.setText(receivedGift.senderName);
+        holder.sentAmount.setText(context.getString(R.string.rupee_sym)+" "+receivedGift.receiveMoney);
 
     }
 

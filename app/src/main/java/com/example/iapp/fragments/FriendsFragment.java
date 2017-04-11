@@ -95,7 +95,9 @@ public class FriendsFragment extends Fragment {
 
 
                 if (friends.size() == 0) {
+                    if(emptyLayout!=null)
                     emptyLayout.setVisibility(View.VISIBLE);
+                    if(friendsRecyclerView!=null)
                     friendsRecyclerView.setVisibility(View.GONE);
                 }
 
@@ -112,7 +114,9 @@ public class FriendsFragment extends Fragment {
                             //   user=null;
                             if (i == friends.size()) {
                                 if (userlist.size() > 0) {
+                                    if(friendsRecyclerView!=null)
                                     friendsRecyclerView.setVisibility(View.VISIBLE);
+                                    if(emptyLayout!=null)
                                     emptyLayout.setVisibility(View.GONE);
                                     mAdapter = new FriendsAdapter(getActivity(), userlist, new OnItemClick() {
                                         @Override
@@ -129,8 +133,10 @@ public class FriendsFragment extends Fragment {
 
                                         }
                                     });
+                                    if(friendsRecyclerView!=null)
                                     friendsRecyclerView.setAdapter(mAdapter);
                                 } else {
+                                    if(friendsRecyclerView!=null)
                                     friendsRecyclerView.setVisibility(View.GONE);
                                     emptyLayout.setVisibility(View.VISIBLE);
                                 }

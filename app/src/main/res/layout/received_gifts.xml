@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/occassionDate"
             android:layout_marginTop="@dimen/margin_8"
-            android:text="Sent Amount : "
+            android:text="Receive Amount : "
             android:textStyle="bold"
             android:textSize="20sp"/>
 
@@ -103,7 +103,7 @@
             android:textSize="18sp"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_below="@+id/occassionDate"
-            android:layout_toRightOf="@+id/occassionDateText"/>
+            android:layout_toRightOf="@+id/sentAmountText"/>
 
 
     </RelativeLayout>

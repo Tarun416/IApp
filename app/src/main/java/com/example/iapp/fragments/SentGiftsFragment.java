@@ -97,7 +97,7 @@ public class SentGiftsFragment extends Fragment {
                     sentRecyclerView.setAdapter(mAapter);
                 } else {
                     sentRecyclerView.setVisibility(View.GONE);
-                    emptyTextView.setVisibility(View.GONE);
+                    emptyTextView.setVisibility(View.VISIBLE);
                 }
             }
 
