@@ -78,7 +78,7 @@ public class FriendsFragment extends Fragment {
     private int i;
 
     private void getFirendsFromDataBase() {
-        CommonUtils.displayProgressDialog(getActivity(), "Fetching friends");
+    //    CommonUtils.displayProgressDialog(getActivity(), "Fetching friends");
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         friendsRecyclerView.setLayoutManager(llm);
 

@@ -9,13 +9,13 @@ public class ReceivedGift {
 
     public String senderName;
     public String occassionDate;
-    public String sentMoney;
+    public String receiveMoney;
     public String occassionName;
 
-    public ReceivedGift(String senderName, String occassionDate, String sentMoney, String occassionName) {
+    public ReceivedGift(String senderName, String occassionDate, String receiveMoney, String occassionName) {
         this.senderName= senderName;
         this.occassionDate = occassionDate;
-        this.sentMoney = sentMoney;
+        this.receiveMoney = receiveMoney;
         this.occassionName = occassionName;
     }
 

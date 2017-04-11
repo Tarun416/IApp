@@ -4,13 +4,24 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sentRecyclerView"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
     <TextView
+        android:id="@+id/emptyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Currently, you haven\'t sent any gift"
         android:textSize="26sp"
         android:layout_margin="@dimen/margin_16"
         android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:gravity="center"
         android:layout_centerInParent="true"/>
 
