@@ -49,7 +49,6 @@ public class ReceivedGiftsFragment extends Fragment {
     private ReceivedGift rmodel;
     private LinearLayoutManager linearLayoutManager;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +77,8 @@ public class ReceivedGiftsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                 if (dataSnapshot.getChildrenCount() > 0)
-
                 {
-
                     if(receiveRecyclerView!=null)
                     receiveRecyclerView.setVisibility(View.VISIBLE);
                     if(emptyLayout!=null)
