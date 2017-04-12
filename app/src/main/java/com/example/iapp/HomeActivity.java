@@ -50,17 +50,16 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home,menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch(id)
-        {
+        int id = item.getItemId();
+        switch (id) {
             case R.id.profile:
-                Intent i=new Intent(this,ProfileActivity.class);
+                Intent i = new Intent(this, ProfileActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
                 break;
@@ -68,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.invite:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -77,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new OccassionFragment(), getString(R.string.events));
         adapter.addFragment(new FriendsFragment(), getString(R.string.friends));
         adapter.addFragment(new SentGiftsFragment(), getString(R.string.sent_gifts));
-        adapter.addFragment(new ReceivedGiftsFragment(),getString(R.string.received_gifts));
+        adapter.addFragment(new ReceivedGiftsFragment(), getString(R.string.received_gifts));
         viewPager.setAdapter(adapter);
     }
 

@@ -83,7 +83,9 @@ public class SentGiftsFragment extends Fragment {
 
                 {
 
+                    if(sentRecyclerView!=null)
                     sentRecyclerView.setVisibility(View.VISIBLE);
+                    if(emptyTextView!=null)
                     emptyTextView.setVisibility(View.GONE);
 
                     for (DataSnapshot sentGiftDatasnapshot : dataSnapshot.getChildren()) {
@@ -94,9 +96,12 @@ public class SentGiftsFragment extends Fragment {
                     }
 
                     mAapter = new SentGiftsAdapter(getActivity(), sendGifts);
+                    if(sentRecyclerView!=null)
                     sentRecyclerView.setAdapter(mAapter);
                 } else {
+                    if(sentRecyclerView!=null)
                     sentRecyclerView.setVisibility(View.GONE);
+                    if(emptyTextView!=null)
                     emptyTextView.setVisibility(View.VISIBLE);
                 }
             }

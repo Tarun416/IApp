@@ -83,6 +83,7 @@ public class ReceivedGiftsFragment extends Fragment {
 
                 {
 
+                    if(receiveRecyclerView!=null)
                     receiveRecyclerView.setVisibility(View.VISIBLE);
                     if(emptyLayout!=null)
                     emptyLayout.setVisibility(View.GONE);
