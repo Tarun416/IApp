@@ -20,6 +20,7 @@ import com.example.iapp.FriendEventsActivity;
 import com.example.iapp.R;
 import com.example.iapp.adapter.FriendsAdapter;
 import com.example.iapp.interfaces.OnItemClick;
+import com.example.iapp.models.Occassion;
 import com.example.iapp.models.User;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -118,7 +119,7 @@ public class FriendsFragment extends Fragment {
                                     friendsRecyclerView.setVisibility(View.VISIBLE);
                                     if(emptyLayout!=null)
                                     emptyLayout.setVisibility(View.GONE);
-                                    mAdapter = new FriendsAdapter(getActivity(), userlist, new OnItemClick() {
+                                    mAdapter = new FriendsAdapter(getActivity(), reverse(userlist), new OnItemClick() {
                                         @Override
                                         public void onFriendClick(int position) {
                                             Intent i = new Intent(getActivity(), FriendEventsActivity.class);
@@ -159,6 +160,17 @@ public class FriendsFragment extends Fragment {
             }
         });
     }
+
+
+    public ArrayList<User> reverse(ArrayList<User> list) {
+        if(list.size() > 1) {
+            User value = list.remove(0);
+            reverse(list);
+            list.add(value);
+        }
+        return list;
+    }
+
 
     @Override
     public void onDestroyView() {

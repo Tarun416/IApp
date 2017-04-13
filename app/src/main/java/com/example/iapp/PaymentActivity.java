@@ -172,11 +172,11 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                             sendDataToFirebase();
-
                             getBalance();
-
+                            Intent i=new Intent(PaymentActivity.this,HomeActivity.class);
+                            i.putExtra("fragmentNo",2);
+                            startActivity(i);
                         }
 
                         @Override
@@ -198,7 +198,6 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
         SendGift sendGift=new SendGift(receiverName,occassionDate,transaction_amount,occassionName);
         mDatabaseReference.child("users").child(preferences.getString("accountId","")).child("sentGifts").push().setValue(sendGift);
-
 
         ReceivedGift receivedGift=new ReceivedGift("Tarun",occassionDate,transaction_amount,occassionName);
 

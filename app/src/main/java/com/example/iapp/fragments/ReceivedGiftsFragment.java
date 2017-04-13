@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.iapp.R;
 import com.example.iapp.adapter.ReceiveGiftAdapter;
-import com.example.iapp.adapter.SentGiftsAdapter;
 import com.example.iapp.models.ReceivedGift;
 import com.example.iapp.models.SendGift;
 import com.google.firebase.database.DataSnapshot;
@@ -68,11 +67,11 @@ public class ReceivedGiftsFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         receiveRecyclerView.setLayoutManager(linearLayoutManager);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        getSentGiftsFromFirebase();
+        getReceivedGiftsFromFirebase();
         return view;
     }
 
-    private void getSentGiftsFromFirebase() {
+    private void getReceivedGiftsFromFirebase() {
         mDatabaseReference.child("users").child(preferences.getString("accountId", "")).child("receivedGifts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -91,7 +90,7 @@ public class ReceivedGiftsFragment extends Fragment {
 
                     }
 
-                    mAapter = new ReceiveGiftAdapter(getActivity(), receivedGifts);
+                    mAapter = new ReceiveGiftAdapter(getActivity(), reverse(receivedGifts));
                     receiveRecyclerView.setAdapter(mAapter);
                 } else {
                     if(receiveRecyclerView!=null)
@@ -108,6 +107,16 @@ public class ReceivedGiftsFragment extends Fragment {
 
             }
         });
+    }
+
+
+    public ArrayList<ReceivedGift> reverse(ArrayList<ReceivedGift> list) {
+        if(list.size() > 1) {
+            ReceivedGift value = list.remove(0);
+            reverse(list);
+            list.add(value);
+        }
+        return list;
     }
 
     @Override

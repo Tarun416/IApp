@@ -27,6 +27,7 @@ import com.example.iapp.R;
 import com.example.iapp.adapter.EventsAdapter;
 import com.example.iapp.models.EventsName;
 import com.example.iapp.models.Occassion;
+import com.example.iapp.models.ReceivedGift;
 import com.example.iapp.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -108,7 +109,7 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
                         eventName.occassionName = d.getKey();
                         occassion.add(eventName);
                     }
-                    mAdapter = new EventsAdapter(getActivity(), occassion);
+                    mAdapter = new EventsAdapter(getActivity(), reverse(occassion));
                     eventsRecView.setAdapter(mAdapter);
                 }
                 else {
@@ -123,6 +124,16 @@ public class OccassionFragment extends Fragment implements View.OnClickListener,
 
             }
         });
+    }
+
+
+    public ArrayList<Occassion> reverse(ArrayList<Occassion> list) {
+        if(list.size() > 1) {
+            Occassion value = list.remove(0);
+            reverse(list);
+            list.add(value);
+        }
+        return list;
     }
 
     @Override

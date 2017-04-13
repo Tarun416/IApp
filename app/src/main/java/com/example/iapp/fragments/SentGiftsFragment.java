@@ -73,6 +73,16 @@ public class SentGiftsFragment extends Fragment {
         return view;
     }
 
+
+    public ArrayList<SendGift> reverse(ArrayList<SendGift> list) {
+        if(list.size() > 1) {
+            SendGift value = list.remove(0);
+            reverse(list);
+            list.add(value);
+        }
+        return list;
+    }
+
     private void getSentGiftsFromFirebase() {
         mDatabaseReference.child("users").child(preferences.getString("accountId", "")).child("sentGifts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -95,7 +105,7 @@ public class SentGiftsFragment extends Fragment {
 
                     }
 
-                    mAapter = new SentGiftsAdapter(getActivity(), sendGifts);
+                    mAapter = new SentGiftsAdapter(getActivity(), reverse(sendGifts));
                     if(sentRecyclerView!=null)
                     sentRecyclerView.setAdapter(mAapter);
                 } else {

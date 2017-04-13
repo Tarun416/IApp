@@ -37,15 +37,26 @@ public class HomeActivity extends AppCompatActivity {
     @Bind(R.id.viewpager)
     ViewPager viewPager;
 
+    private ViewPagerAdapter adapter;
+    private Bundle bundle;
+    private int fragmentNo;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        bundle=getIntent().getExtras();
+
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+
+        if(bundle!=null) {
+            fragmentNo = bundle.getInt("fragmentNo");
+            viewPager.setCurrentItem(fragmentNo);
+        }
     }
 
     @Override
@@ -71,7 +82,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new OccassionFragment(), getString(R.string.events));
         adapter.addFragment(new FriendsFragment(), getString(R.string.friends));
         adapter.addFragment(new SentGiftsFragment(), getString(R.string.sent_gifts));
